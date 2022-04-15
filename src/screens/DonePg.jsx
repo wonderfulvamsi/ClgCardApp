@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useState } from 'react'
 import { Button } from '@mui/material'
 import Lottie from 'react-lottie';
@@ -26,100 +26,78 @@ function DonePg() {
             preserveAspectRatio: "xMidYMid slice"
         }
     };
+    const { status, on, to, amount } = useParams();
 
-    const [done, setDone] = useState(false);
-    const [paid, setPaid] = useState(false);
-
-    if (done) {
-        return (<>
-            <div className="App">
-                <header className="App-header">
-                    <div className="mobilehome">
-                        <div className="wrapper">
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                <div className='loader'><h2>Loading</h2></div>
-                                <h2>Loading</h2>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-            </div>
-        </>)
-    }
-    else {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <div className="mobilehome">
-                        <div className="wrapper">
-                            <div style={{ flex: 1 }}>
-                                <h2>Payment Status</h2>
-                                {1 ? <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    return (
+        <div className="App">
+            <header className="App-header">
+                <div className="mobilehome">
+                    <div className="wrapper">
+                        <div style={{ flex: 1 }}>
+                            <h2>Payment Status</h2>
+                            {(status == 'good') ? <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Card sx={{ borderRadius: '1em', minWidth: 275, width: '90%', color: 'white', backgroundColor: '#393E46' }}>
+                                    <CardContent>
+                                        <Typography sx={{ fontSize: 14 }} gutterBottom>
+                                            {on}
+                                        </Typography>
+                                        <Typography variant="h3" component="div">
+                                            Rs {amount}
+                                        </Typography>
+                                        <Typography sx={{ mb: 1.5 }} >
+                                            To
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontSize: 20 }}>
+                                            {to}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                                <div>
+                                    <Lottie
+                                        options={defaultOptions}
+                                        height={300}
+                                        width={300}
+                                    />
+                                </div>
+                                <div>
+                                </div>
+                            </div> :
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
                                     <Card sx={{ borderRadius: '1em', minWidth: 275, width: '90%', color: 'white', backgroundColor: '#393E46' }}>
                                         <CardContent>
                                             <Typography sx={{ fontSize: 14 }} gutterBottom>
-                                                25/06/2001
+                                                {on}
                                             </Typography>
                                             <Typography variant="h3" component="div">
-                                                Rs 6900
+                                                Rs {amount}
                                             </Typography>
                                             <Typography sx={{ mb: 1.5 }} >
                                                 To
                                             </Typography>
                                             <Typography variant="body2" sx={{ fontSize: 20 }}>
-                                                Canteen
+                                                {to}
                                             </Typography>
                                         </CardContent>
                                     </Card>
                                     <div>
                                         <Lottie
-                                            options={defaultOptions}
+                                            options={faileddefaultOptions}
                                             height={300}
                                             width={300}
                                         />
                                     </div>
                                     <div>
                                     </div>
-                                </div> :
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                </div>}
 
-                                        <Card sx={{ borderRadius: '1em', minWidth: 275, width: '90%', color: 'white', backgroundColor: '#393E46' }}>
-                                            <CardContent>
-                                                <Typography sx={{ fontSize: 14 }} gutterBottom>
-                                                    25/06/2001
-                                                </Typography>
-                                                <Typography variant="h3" component="div">
-                                                    Rs 6900
-                                                </Typography>
-                                                <Typography sx={{ mb: 1.5 }} >
-                                                    To
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ fontSize: 20 }}>
-                                                    Canteen
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                        <div>
-                                            <Lottie
-                                                options={faileddefaultOptions}
-                                                height={300}
-                                                width={300}
-                                            />
-                                        </div>
-                                        <div>
-                                        </div>
-                                    </div>}
-
-                            </div>
-                            <Button variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', backgroundColor: '#548CFF' }} component={Link} to={'/home'} >Back To Home</Button>
                         </div>
+                        <Button variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', backgroundColor: '#548CFF' }} component={Link} to={'/home'} >Back To Home</Button>
                     </div>
-                </header >
-            </div >
-        )
-
-    }
+                </div>
+            </header >
+        </div >
+    )
 
 }
 

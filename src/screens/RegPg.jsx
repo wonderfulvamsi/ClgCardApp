@@ -64,7 +64,7 @@ function RegPg() {
                                 <p style={{ opacity: '80%', margin: '10%' }}>{meta}</p>
                             </div>
                         </div>
-                        <Link ref={next} to='/otp' style={{ display: 'None' }} />
+                        <Link ref={next} to='/otp/reg' style={{ display: 'None' }} />
                         <Button variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', backgroundColor: '#548CFF' }} onClick={checkrollno}>Next</Button>
                     </div>
                 </div>

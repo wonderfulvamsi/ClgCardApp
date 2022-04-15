@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import SettingsIcon from '@mui/icons-material/Settings';
 import Paper from '@mui/material/Paper';
@@ -7,18 +7,46 @@ import { useEffect } from 'react';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
-import StoreIcon from '@mui/icons-material/Store';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import viglogo from '../assets/viglogo.png'
 import { Button } from '@mui/material'
 import Transac from '../components/Transac'
+import ClgCardContext from '../ClgCardContext';
+import { useContext } from 'react';
+import axios from 'axios';
+
 function HomePg() {
+
+    let belink = 'https://clgcard.herokuapp.com/';
+
+    const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
+
+    let credit = 0;
+
+    const [history, setHisotry] = useState([]);
+
+
+
     useEffect(() => {
-        WebFont.load({
-            google: {
-                families: ['Satisfy']
-            }
-        });
+        const render = async () => {
+            WebFont.load({
+                google: {
+                    families: ['Satisfy']
+                }
+            });
+            await axios.post(belink + 'payments/userdetails', {
+                rollno: rollno
+            }).then((res) => {
+                console.log(res);
+            });
+
+            await axios.post(belink + 'payments/history', {
+                rollno: rollno
+            }).then((res) => {
+                setHisotry(res.data.reverse());
+            })
+        }
+        render();
     }, []);
     return (
         <div className="App">
@@ -31,7 +59,7 @@ function HomePg() {
                     </div>
 
                     <div className="welcome">
-                        <h1 style={{ fontSize: '150%', textAlign: 'left', marginTop: 0, marginBottom: 0, marginLeft: '5%', opacity: '60%', position: 'absolute', top: '18%' }}>VAMSI</h1>
+                        <h1 style={{ fontSize: '150%', textAlign: 'left', marginTop: 0, marginBottom: 0, marginLeft: '5%', opacity: '60%', position: 'absolute', top: '18%' }}>{name.slice(0, 9)}</h1>
                         <h4 style={{
                             fontSize: '90%', textAlign: 'left', marginTop: '3% ', marginLeft: '6% ', marginBottom: 0, opacity: '90% '
                         }}>Welcome Back!</h4>
@@ -41,12 +69,12 @@ function HomePg() {
                             <p style={{ fontSize: '80%', margin: 0, position: 'relative', top: '-4%' }}>Credit</p>
                             <h2 style={{ color: 'black', opacity: '60%', margin: 0, fontSize: '150%', position: 'relative', top: '-4%' }}>Rs 6900</h2>
                             <p style={{ fontSize: '100%', color: 'black', marginTop: 0, marginBottom: '2%' }}>18L31A1962</p>
-                            <p style={{ color: 'grey', fontFamily: 'sans-serif', fontWeight: 'bold', opacity: '60%', fontSize: '90%', color: 'black', margin: 0 }}>Vamsi</p>
+                            <p style={{ color: 'grey', fontFamily: 'sans-serif', fontWeight: 'bold', opacity: '60%', fontSize: '90%', color: 'black', margin: 0 }}>{name.slice(0, 10)}</p>
                         </div>
                         <div className="rightcard">
-                            <img src={viglogo} height='50%' style={{ marginRight: '10%', position: 'relative', top: '-4%' }} />
+                            <img src={viglogo} height='50%' style={{ marginRight: '10%', position: 'relative', top: '-8%' }} />
                             <div style={{
-                                marginRight: '10%', marginBottom: '25%', fontFamily: 'Satisfy', color: 'white', fontSize: '160%', margin: '0.3em'
+                                position: 'relative', top: '-6%', marginRight: '10%', marginBottom: '25%', fontFamily: 'Satisfy', color: 'white', fontSize: '160%', margin: '0.3em'
                             }}>
                                 ClgCard
                             </div>
@@ -73,7 +101,7 @@ function HomePg() {
                         </div>
                         <div className='option'>
                             <div className="iconwrap" onClick={() => { document.getElementById('storeslink').click(); }}>
-                                <Link id='storeslink' to='/stores' style={{ display: 'none' }} />
+                                <Link id='storeslink' to='/events' style={{ display: 'none' }} />
                                 <LocalActivityIcon sx={{ color: 'white' }} fontSize='medium' />
                             </div>
                             Events
@@ -90,12 +118,9 @@ function HomePg() {
                         <div className="recents">
                             <p style={{ color: 'black', opacity: '80%', marginTop: '2%' }}>Recent Transactions</p>
                             <div className='transaclist' style={{ maxHeight: '84.5%', overflow: 'scroll' }}>
-                                <Transac Date='1-1-1' To='Canteen' Amount='69' />
-                                <Transac Date='1-1-1' To='Canteen' Amount='69' />
-                                <Transac Date='1-1-1' To='Canteen' Amount='69' />
-                                <Transac Date='1-1-1' To='Canteen' Amount='69' />
-                                <Transac Date='1-1-1' To='Canteen' Amount='69' />
-                                <Transac Date='1-1-1' To='Canteen' Amount='69' />
+                                {history.map((item) => {
+                                    return <Transac Date={item.date.slice(5, 10)} To={item.to} Amount={item.amount} />
+                                })}
                             </div>
                         </div>
                     </div>

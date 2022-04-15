@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import EventCard from '../components/EventCard'
+import axios from 'axios';
+
+function EventsPg() {
+    const [data, setData] = useState([]);
+    let belink = 'https://clgcard.herokuapp.com/';
+
+    useEffect(() => {
+        const render = async () => {
+            await axios.get(belink + 'catalog/events').then((res) => {
+                console.log(res);
+                setData(res.data);
+            });
+        }
+        render();
+    }, []);
 
 
-function StoresPg() {
     return (
         <div className="App">
             <header className="App-header">
@@ -18,15 +32,9 @@ function StoresPg() {
                             height: '83.7%', width: '80%',
                             background: 'linear-gradient(4deg, rgba(32,50,57,1) 0%, rgba(97,242,245,1) 100%)'
                         }}>
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-                            <EventCard />
-
+                            {data.map((item) => (
+                                <EventCard Name={item.name} Disc={item.disc} Cost={item.cost} Ends={item.enddate} />
+                            ))}
                         </div>
                     </div>
                 </div >
@@ -35,4 +43,4 @@ function StoresPg() {
     )
 }
 
-export default StoresPg
+export default EventsPg

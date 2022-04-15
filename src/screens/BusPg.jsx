@@ -1,80 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Stack } from '@mui/material';
-
-const itemData = [
-    {
-        img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-        title: 'Breakfast',
-        author: '@bkristastucchio',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-        title: 'Burger',
-        author: '@rollelflex_graphy726',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-        title: 'Camera',
-        author: '@helloimnik',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-        title: 'Coffee',
-        author: '@nolanissac',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-        title: 'Hats',
-        author: '@hjrc33',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-        title: 'Honey',
-        author: '@arwinneil',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-        title: 'Basketball',
-        author: '@tjdragotta',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-        title: 'Fern',
-        author: '@katie_wasserman',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-        title: 'Mushrooms',
-        author: '@silverdalex',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-        title: 'Tomato basil',
-        author: '@shelleypauls',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-        title: 'Sea star',
-        author: '@peterlaster',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-        title: 'Bike',
-        author: '@southside_customs',
-    },
-];
+import { Stack, Chip } from '@mui/material';
+import axios from 'axios';
 
 function BusPg() {
 
+    const [data, setData] = useState([]);
+    let belink = 'https://clgcard.herokuapp.com/';
 
+    useEffect(() => {
+        const render = async () => {
+            await axios.get(belink + 'catalog/busfares').then((res) => {
+                console.log(res);
+                setData(res.data);
+            });
+        }
+        render();
+    }, []);
 
     return (
         <div className="App">
@@ -91,19 +39,16 @@ function BusPg() {
                         }}>
 
                             <ImageList className='transaclist' cols={1} sx={{ marginTop: 0, width: '100%', height: '100%' }}>
-                                {itemData.map((item) => (
+                                {data.map((item) => (
                                     <ImageListItem sx={{ margin: '2%', backgroundColor: 'black', borderRadius: '7%' }} key={item.img}>
                                         <img
-                                            src={`${item.img}?w=248&fit=crop&auto=format`}
-                                            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                            alt={item.title}
+                                            src={item.imglink}
+                                            alt={item.area}
                                             style={{
                                                 pointer: 'cursor',
                                                 borderTopRightRadius: '2%', borderTopLeftRadius: '2% '
                                             }}
                                         />
-
-
                                         <Accordion >
                                             <AccordionSummary
                                                 expandIcon={<ExpandMoreIcon />}
@@ -111,22 +56,38 @@ function BusPg() {
                                                 id="panel1a-header"
                                             >
                                                 <Stack>
-                                                    <Typography>Area</Typography>
-                                                    <Typography>Prize</Typography>
+                                                    <Typography><h2 style={{ margin: '2%', textAlign: 'center' }}>{item.area}</h2></Typography>
+                                                    <Typography><h2 style={{ margin: '2%', textAlign: 'center' }}>₹{item.cost}</h2></Typography>
                                                 </Stack>
                                             </AccordionSummary>
                                             <AccordionDetails>
                                                 <Stack>
                                                     <Typography>
-                                                        Bus Number
+                                                        <h2 style={{ margin: '2%', textAlign: 'center' }}>Bus Number {item.busnumber}</h2>
+                                                    </Typography>
+                                                    <Typography>
+                                                        <h3 style={{ margin: '2%', textAlign: 'left' }}>Driver Numbers</h3>
+                                                        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                                                            {
+                                                                item.drivernumber.map((num) => {
+                                                                    return <Chip label={num} style={{ margin: '1%' }} />
+                                                                })
+                                                            }
+                                                        </Stack>
 
                                                     </Typography>
                                                     <Typography>
-                                                        Driver Number
+                                                        <h3 style={{ margin: '2%', textAlign: 'left' }}>Bus Stops</h3>
 
-                                                    </Typography>
-                                                    <Typography>
-                                                        Bus Stops
+                                                        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap' }}>
+                                                            {
+                                                                item.busstops.map((stop) => {
+                                                                    console.log(stop)
+                                                                    return <Chip label={stop} style={{ margin: '1%' }
+                                                                    } />
+                                                                })
+                                                            }
+                                                        </Stack>
                                                     </Typography>
                                                 </Stack>
                                             </AccordionDetails>

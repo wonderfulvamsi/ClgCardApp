@@ -4,9 +4,14 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import StoreIcon from '@mui/icons-material/Store';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import { useParams } from 'react-router-dom';
+import ClgCardContext from '../ClgCardContext';
+import { useContext } from 'react';
+import { Link } from 'react-router-dom'
+import axios from 'axios';
+
 const style = {
     position: 'absolute',
     top: '40%',
@@ -18,10 +23,16 @@ const style = {
     p: 4,
 };
 function PayPage() {
+
+    let belink = 'https://clgcard.herokuapp.com/';
+
+    const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
+
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => { console.log('ass'); setOpen(true) };
     const handleClose = () => setOpen(false);
-
+    const [ok, setOk] = useState(false);
     const [next, setNext] = useState(false);
     const [option, setOption] = useState('');
 
@@ -72,6 +83,18 @@ function PayPage() {
         }
 
     }, [option])
+
+    useEffect(() => {
+        const fun = async () => {
+            if (next == '1234') {
+                setOk(true);
+                await axios.post(belink + 'payments/getotp' + '?message=ClgCardMsg&number=91' + '9989633866' + '&subject=ClgCardSubj', {
+                    rollno: '18L31A1962'
+                }).then(document.getElementById('tootppg').click())
+            }
+        }
+        fun();
+    }, [next])
 
     return (
         <div className="App">
@@ -131,7 +154,8 @@ function PayPage() {
                                 </Box>
                             </Modal>
                         </div>
-                        <Button disabled={amount ? false : true} variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', fontWeight: 'bold', backgroundColor: '#548CFF' }} onClick={handleOpen} >Next</Button>
+                        <Link id='tootppg' to='/otp/pay' style={{ display: 'none' }} />
+                        <Button disabled={ok ? amount ? false : true : false} variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', fontWeight: 'bold', backgroundColor: '#548CFF' }} onClick={handleOpen} >Next</Button>
                     </div>
                 </div>
             </header>

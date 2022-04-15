@@ -22,7 +22,7 @@ function Transac({ Date, To, Amount }) {
                     </div>
                     <h4 style={{
                         color: '#F3F3F3',
-                        textAlign: 'center',
+                        textAlign: 'right',
                         marginBottom: '10%', fontSize: '90%', fontFamily: 'sans-serif'
                     }}>{Amount}</h4>
                 </Stack>

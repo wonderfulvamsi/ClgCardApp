@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPg from './screens/LandingPg'
 import HomePg from './screens/HomePg'
 import BusPg from './screens/BusPg'
-import StoresPg from './screens/StoresPg'
+import EventsPg from './screens/EventsPg'
 import CanteenPg from './screens/CanteenPg'
 import LibPg from './screens/LibPg'
 import ProfilePg from './screens/ProfilePg'
@@ -34,12 +34,12 @@ function App() {
             <Route path="/profile" element={<ProfilePg />} />
             <Route path="/pay" element={<PayPg />} />
             <Route path="/bus" element={<BusPg />} />
-            <Route path="/stores" element={<StoresPg />} />
+            <Route path="/events" element={<EventsPg />} />
             <Route path="/canteen" element={<CanteenPg />} />
             <Route path="/lib" element={<LibPg />} />
-            <Route path="/otp" element={<OtpPg />} />
-            <Route path="/directpay" element={<DirectPayPg />} />
-            <Route path="/done" element={<DonePg />} />
+            <Route path="/otp/:from" element={<OtpPg />} />
+            <Route path="/directpay/:eventname/:cost" element={<DirectPayPg />} />
+            <Route path="/done/:status/:on/:to/:amount" element={<DonePg />} />
           </Routes>
         </Router>
       </ClgCardContext.Provider>
