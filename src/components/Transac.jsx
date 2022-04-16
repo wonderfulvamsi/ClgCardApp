@@ -1,9 +1,17 @@
 import React from 'react'
 import { Stack } from '@mui/material'
-function Transac({ Date, To, Amount }) {
+
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+
+function Transac({ Status, Date, To, Amount }) {
     return (
         <>
             <div className='transac'>
+                <div style={{ marginTop: '5%', marginLeft: '-5%', marginRight: '-7%' }}>
+                    {Status ? <CheckCircleIcon /> : <CancelIcon />}
+                </div>
                 <Stack spacing={-1} sx={{ width: '20%' }}>
                     <div style={{ color: '#F0F5F9', marginTop: '10%', marginBottom: '20%', fontSize: '80%', fontFamily: 'sans-serif' }}>
                         Date

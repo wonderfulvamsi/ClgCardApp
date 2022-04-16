@@ -24,6 +24,8 @@ const style = {
 };
 function PayPage() {
 
+
+
     let belink = 'https://clgcard.herokuapp.com/';
 
     const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
@@ -86,15 +88,16 @@ function PayPage() {
 
     useEffect(() => {
         const fun = async () => {
-            if (next == '1234') {
+            if (next == pass) {
                 setOk(true);
-                await axios.post(belink + 'payments/getotp' + '?message=ClgCardMsg&number=91' + '9989633866' + '&subject=ClgCardSubj', {
-                    rollno: '18L31A1962'
-                }).then(document.getElementById('tootppg').click())
+
+                await axios.post(belink + 'payments/getotp' + '?message=ClgCardMsg&number=91' + mobileno + '&subject=ClgCardSubj',
+                    { rollno: rollno }).then((res) => { document.getElementById('tootppg').click(); });
             }
         }
         fun();
-    }, [next])
+    }, [next]);
+
 
     return (
         <div className="App">
@@ -147,14 +150,14 @@ function PayPage() {
                                 <Box sx={style}>
 
                                     <div style={{ height: '80%', textAlign: 'center', }}>
-                                        <p style={{ marginTop: 0, marginBottom: 0, fontSize: '150%' }}>Enter your password</p>
-                                        <Input placeholder="XXXX" inputProps={{ maxLength: '4', min: 0, style: { fontSize: '150%', margin: '5%', padding: '5%', textAlign: 'center' } }} onChange={(e) => { setNext(e.target.value) }} />
+                                        <p style={{ marginTop: 0, marginBottom: 0, fontSize: '150%' }}>Enter Your Pin</p>
+                                        <Input placeholder="XXXX" type='password' inputProps={{ maxLength: '4', min: 0, style: { fontSize: '150%', margin: '5%', padding: '5%', textAlign: 'center' } }} onChange={(e) => { setNext(e.target.value) }} />
                                     </div>
 
                                 </Box>
                             </Modal>
                         </div>
-                        <Link id='tootppg' to='/otp/pay' style={{ display: 'none' }} />
+                        <Link id='tootppg' to={'/otp/pay/' + option + '/' + amount} style={{ display: 'none' }} />
                         <Button disabled={ok ? amount ? false : true : false} variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', fontWeight: 'bold', backgroundColor: '#548CFF' }} onClick={handleOpen} >Next</Button>
                     </div>
                 </div>

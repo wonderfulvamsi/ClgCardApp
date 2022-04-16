@@ -37,7 +37,7 @@ function App() {
             <Route path="/events" element={<EventsPg />} />
             <Route path="/canteen" element={<CanteenPg />} />
             <Route path="/lib" element={<LibPg />} />
-            <Route path="/otp/:from" element={<OtpPg />} />
+            <Route path="/otp/:from/:to/:amount" element={<OtpPg />} />
             <Route path="/directpay/:eventname/:cost" element={<DirectPayPg />} />
             <Route path="/done/:status/:on/:to/:amount" element={<DonePg />} />
           </Routes>

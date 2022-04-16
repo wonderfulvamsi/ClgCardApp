@@ -15,19 +15,23 @@ import ClgCardContext from '../ClgCardContext';
 import { useContext } from 'react';
 import axios from 'axios';
 
+
+
+
 function HomePg() {
 
     let belink = 'https://clgcard.herokuapp.com/';
 
     const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
 
-    let credit = 0;
+    const [credit, setCredit] = useState();
 
     const [history, setHisotry] = useState([]);
 
 
 
     useEffect(() => {
+        console.log("came 2 home pg");
         const render = async () => {
             WebFont.load({
                 google: {
@@ -38,6 +42,7 @@ function HomePg() {
                 rollno: rollno
             }).then((res) => {
                 console.log(res);
+                setCredit(res.data.credit);
             });
 
             await axios.post(belink + 'payments/history', {
@@ -67,8 +72,8 @@ function HomePg() {
                     <Paper sx={{ borderRadius: "3%" }} className="card" elevation={3}>
                         <div className="leftcard">
                             <p style={{ fontSize: '80%', margin: 0, position: 'relative', top: '-4%' }}>Credit</p>
-                            <h2 style={{ color: 'black', opacity: '60%', margin: 0, fontSize: '150%', position: 'relative', top: '-4%' }}>Rs 6900</h2>
-                            <p style={{ fontSize: '100%', color: 'black', marginTop: 0, marginBottom: '2%' }}>18L31A1962</p>
+                            <h2 style={{ color: 'black', opacity: '60%', margin: 0, fontSize: '150%', position: 'relative', top: '-4%' }}>₹ {credit}</h2>
+                            <p style={{ fontSize: '100%', color: 'black', marginTop: 0, marginBottom: '2%' }}>{rollno}</p>
                             <p style={{ color: 'grey', fontFamily: 'sans-serif', fontWeight: 'bold', opacity: '60%', fontSize: '90%', color: 'black', margin: 0 }}>{name.slice(0, 10)}</p>
                         </div>
                         <div className="rightcard">
@@ -119,7 +124,7 @@ function HomePg() {
                             <p style={{ color: 'black', opacity: '80%', marginTop: '2%' }}>Recent Transactions</p>
                             <div className='transaclist' style={{ maxHeight: '84.5%', overflow: 'scroll' }}>
                                 {history.map((item) => {
-                                    return <Transac Date={item.date.slice(5, 10)} To={item.to} Amount={item.amount} />
+                                    return <Transac Status={item.sucessful} Date={item.date.slice(5, 10)} To={item.to} Amount={item.amount} />
                                 })}
                             </div>
                         </div>

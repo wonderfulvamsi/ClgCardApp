@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@mui/material'
 import Lottie from 'react-lottie';
 import animationdata from '../assets/paid.json';
@@ -7,8 +7,14 @@ import failedanimationdata from '../assets/failed.json';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-function DonePg() {
+import axios from 'axios';
+import ClgCardContext from '../ClgCardContext';
+import { useContext } from 'react';
 
+
+function DonePg() {
+    let belink = 'https://clgcard.herokuapp.com/';
+    const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
     const defaultOptions = {
         loop: false,
         autoplay: true,
@@ -27,6 +33,20 @@ function DonePg() {
         }
     };
     const { status, on, to, amount } = useParams();
+
+
+    useEffect(() => {
+        const pay = async () => {
+            await axios.post(belink + 'payments/fastpay', {
+                rollno: rollno,
+                date: on,
+                to: to,
+                amount: parseInt(amount),
+                status: (status == 'good') ? true : false
+            });
+        }
+        pay();
+    }, [])
 
     return (
         <div className="App">

@@ -7,6 +7,7 @@ import axios from 'axios';
 import ClgCardContext from '../ClgCardContext';
 import { useContext } from 'react';
 function RegPg() {
+
     let belink = 'https://clgcard.herokuapp.com/';
 
     const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
@@ -27,12 +28,14 @@ function RegPg() {
                 name: name
             })
             setMobileno(user.data.mobileno);
-
-            await axios.post(belink + 'payments/getotp' + '?message=ClgCardMsg&number=91' + user.data.mobileno + '&subject=ClgCardSubj', {
-                rollno: rollno
-            })
             setMeta('Loading ')
-            next.current.click();
+            console.log(document.getElementById('tootp'));
+            await axios.post(belink + 'payments/getotp' + '?message=ClgCardMsg&number=91' + mobileno + '&subject=ClgCardSubj',
+                { rollno: rollno }).then(() => {
+                    console.log(document.getElementById('tootppg'))
+                    document.getElementById('tootppg').click();
+
+                });
         }
         else if (result.data == "ClgCard is being used in some other device. Signout there first!") {
             setMeta("ClgCard is being used in some other device. Signout there first!");
@@ -58,13 +61,13 @@ function RegPg() {
                                     <TextField style={{ width: '100%' }} id="outlined-basic" label="user name" variant="outlined" onChange={(e) => { setName(e.target.value) }} />
                                 </div>
                                 <div style={{ marginLeft: '10%', marginRight: '10%', flex: 1, textAlign: 'left' }}>
-                                    <p style={{ fontSize: '1em' }}>Set Password</p>
-                                    <TextField style={{ width: '100%' }} id="outlined-basic" label="password" type='password' variant="outlined" onChange={(e) => { setPass(e.target.value) }} />
+                                    <p style={{ fontSize: '1em' }}>Set Your 4-Digit Pin</p>
+                                    <TextField inputProps={{ maxLength: '4' }} style={{ width: '100%' }} id="outlined-basic" label="pin" type='password' variant="outlined" onChange={(e) => { setPass(e.target.value) }} />
                                 </div>
                                 <p style={{ opacity: '80%', margin: '10%' }}>{meta}</p>
                             </div>
                         </div>
-                        <Link ref={next} to='/otp/reg' style={{ display: 'None' }} />
+                        <Link id='tootppg' to='/otp/reg/bla/bla' style={{ display: 'None' }} />
                         <Button variant='contained' sx={{ fontSize: '100%', fontWeight: 'bold', height: '10%', width: '100%', backgroundColor: '#548CFF' }} onClick={checkrollno}>Next</Button>
                     </div>
                 </div>
