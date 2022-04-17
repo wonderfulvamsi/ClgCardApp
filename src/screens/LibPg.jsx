@@ -67,7 +67,6 @@ function LibPg() {
                                             alt={item.title}
                                             style={{
                                                 borderTopRightRadius: '7%', borderTopLeftRadius: '7% ',
-                                                objectFit: 'contain',
                                             }}
                                         />
                                         <ImageListItemBar

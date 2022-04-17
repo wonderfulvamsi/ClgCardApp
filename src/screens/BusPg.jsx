@@ -70,11 +70,8 @@ function BusPg() {
                                             src={item.imglink}
                                             alt={item.area}
                                             style={{
-                                                height: '50%',
-                                                width: '50%',
                                                 pointer: 'cursor',
                                                 borderTopRightRadius: '2%', borderTopLeftRadius: '2% ',
-                                                objectFit: 'contain'
                                             }}
                                         />
                                         <Accordion >

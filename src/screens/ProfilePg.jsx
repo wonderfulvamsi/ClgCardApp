@@ -21,7 +21,6 @@ const style = {
 function ProfilePg() {
 
     let belink = 'https://clgcard.herokuapp.com/';
-
     const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);
 
     const [openchangemobileno, setOpenchangemobileno] = useState(false);
@@ -38,7 +37,7 @@ function ProfilePg() {
 
     const handleSignout = async () => {
 
-        await axios.delete(belink + 'payments/delete', {
+        await axios.patch(belink + 'payments/delete', {
             rollno: rollno,
             password: pass
         }).then((res) => { console.log(res); document.getElementById('tostart').click() });

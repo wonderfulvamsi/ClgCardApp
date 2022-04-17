@@ -32,9 +32,8 @@ function RegPg() {
             console.log(document.getElementById('tootp'));
             await axios.post(belink + 'payments/getotp' + '?message=ClgCardMsg&number=91' + mobileno + '&subject=ClgCardSubj',
                 { rollno: rollno }).then(() => {
-                    console.log(document.getElementById('tootppg'))
+                    console.log("msg sent to " + mobileno + "...")
                     document.getElementById('tootppg').click();
-
                 });
         }
         else if (result.data == "ClgCard is being used in some other device. Signout there first!") {
