@@ -24,8 +24,6 @@ const style = {
 };
 function PayPage() {
 
-
-
     let belink = 'https://clgcard.herokuapp.com/';
 
     const { rollno, setRollno, pass, setPass, name, setName, mobileno, setMobileno } = useContext(ClgCardContext);

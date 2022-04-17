@@ -1,20 +1,28 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import SettingsIcon from '@mui/icons-material/Settings';
-import Paper from '@mui/material/Paper';
 import WebFont from 'webfontloader';
 import { useEffect } from 'react';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import viglogo from '../assets/viglogo.png'
 import { Button } from '@mui/material'
 import Transac from '../components/Transac'
 import ClgCardContext from '../ClgCardContext';
 import { useContext } from 'react';
 import axios from 'axios';
 
+import Modal from '@mui/material/Modal';
+import { Box } from '@mui/material'
+import LoadingPg from '../components/LoadingPg';
+import DisplayCard from '../components/DisplayCard';
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
 
 
 
@@ -28,9 +36,10 @@ function HomePg() {
 
     const [history, setHisotry] = useState([]);
 
-
+    const [open, setOpen] = React.useState(false);
 
     useEffect(() => {
+        setOpen(true);
         console.log("came 2 home pg");
         const render = async () => {
             WebFont.load({
@@ -49,9 +58,11 @@ function HomePg() {
                 rollno: rollno
             }).then((res) => {
                 setHisotry(res.data.reverse());
+                setOpen(false);
             })
         }
         render();
+
     }, []);
     return (
         <div className="App">
@@ -59,7 +70,8 @@ function HomePg() {
                 <div className="mobilehome">
                     <div className="top">
                         <div className="settings">
-                            <SettingsIcon fontSize='medium' />
+                            <Link id='profilelink' to='/profile' style={{ display: 'none' }} />
+                            <SettingsIcon fontSize='medium' onClick={() => { document.getElementById('profilelink').click() }} />
                         </div>
                     </div>
 
@@ -68,26 +80,20 @@ function HomePg() {
                         <h4 style={{
                             fontSize: '90%', textAlign: 'left', marginTop: '3% ', marginLeft: '6% ', marginBottom: 0, opacity: '90% '
                         }}>Welcome Back!</h4>
+                        <Modal
+                            open={open}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box sx={style}>
+
+                                <LoadingPg />
+
+                            </Box>
+                        </Modal>
+
                     </div>
-                    <Paper sx={{ borderRadius: "3%" }} className="card" elevation={3}>
-                        <div className="leftcard">
-                            <p style={{ fontSize: '80%', margin: 0, position: 'relative', top: '-4%' }}>Credit</p>
-                            <h2 style={{ color: 'black', opacity: '60%', margin: 0, fontSize: '150%', position: 'relative', top: '-4%' }}>₹ {credit}</h2>
-                            <p style={{ fontSize: '100%', color: 'black', marginTop: 0, marginBottom: '2%' }}>{rollno}</p>
-                            <p style={{ color: 'grey', fontFamily: 'sans-serif', fontWeight: 'bold', opacity: '60%', fontSize: '90%', color: 'black', margin: 0 }}>{name.slice(0, 10)}</p>
-                        </div>
-                        <div className="rightcard">
-                            <img src={viglogo} height='50%' style={{ marginRight: '10%', position: 'relative', top: '-8%' }} />
-                            <div style={{
-                                position: 'relative', top: '-6%', marginRight: '10%', marginBottom: '25%', fontFamily: 'Satisfy', color: 'white', fontSize: '160%', margin: '0.3em'
-                            }}>
-                                ClgCard
-                            </div>
-                        </div>
-                    </Paper>
-                    <Paper sx={{ borderRadius: "3%" }} className="bgcard" elevation={3}>
-                        { /*Lol Z-index works only if position is given in the CSS  */}
-                    </Paper>
+                    <DisplayCard name={name} rollno={rollno} credit={credit} />
                     <div className="catlog">
                         <div className='option'>
                             <div className="iconwrap" onClick={() => { document.getElementById('liblink').click(); }}>

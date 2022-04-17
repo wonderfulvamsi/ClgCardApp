@@ -8,10 +8,22 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Stack, Chip } from '@mui/material';
 import axios from 'axios';
+import Modal from '@mui/material/Modal';
+import { Box } from '@mui/material'
+import LoadingPg from '../components/LoadingPg';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+};
+
 
 function BusPg() {
 
     const [data, setData] = useState([]);
+    const [open, setOpen] = React.useState(true);
     let belink = 'https://clgcard.herokuapp.com/';
 
     useEffect(() => {
@@ -19,7 +31,9 @@ function BusPg() {
             await axios.get(belink + 'catalog/busfares').then((res) => {
                 console.log(res);
                 setData(res.data);
+
             });
+            setOpen(false);
         }
         render();
     }, []);
@@ -37,6 +51,17 @@ function BusPg() {
                             height: '83.7%', width: '80%',
                             background: 'linear-gradient(4deg, rgba(32,50,57,1) 0%, rgba(127,255,0,1) 100%)'
                         }}>
+                            <Modal
+                                open={open}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                            >
+                                <Box sx={style}>
+
+                                    <LoadingPg />
+
+                                </Box>
+                            </Modal>
 
                             <ImageList className='transaclist' cols={1} sx={{ marginTop: 0, width: '100%', height: '100%' }}>
                                 {data.map((item) => (
@@ -45,8 +70,11 @@ function BusPg() {
                                             src={item.imglink}
                                             alt={item.area}
                                             style={{
+                                                height: '50%',
+                                                width: '50%',
                                                 pointer: 'cursor',
-                                                borderTopRightRadius: '2%', borderTopLeftRadius: '2% '
+                                                borderTopRightRadius: '2%', borderTopLeftRadius: '2% ',
+                                                objectFit: 'contain'
                                             }}
                                         />
                                         <Accordion >
